@@ -17,9 +17,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+          always-auth: true
+          # Defaults to the user or organization that owns the workflow file
+          scope: '@nolemonnomelon'
       - run: yarn
-      - run: |
-            echo "//npm.pkg.github.com/:_authToken=$NODE_AUTH_TOKEN
-            @nolemonnomelon:registry=https://npm.pkg.github.com/" > ~/.npmrc && npm publish --access=restricted
+      - run: echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc && yarn publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_NN_VIDEO_PAT }}
