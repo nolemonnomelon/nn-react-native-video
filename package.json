@@ -1,6 +1,6 @@
 {
     "name": "@nolemonnomelon/react-native-video",
-    "version": "6.1.2",
+    "version": "6.1.2-aplha.1",
     "description": "A <Video /> element for react-native",
     "main": "lib/index",
     "source": "src/index",
@@ -8,10 +8,9 @@
     "license": "MIT",
     "author": "Community Contributors",
     "homepage": "https://github.com/nolemonnomelon/nn-react-native-video#readme",
-    "private": true,
     "repository": {
         "type": "git",
-        "url": "git@github.com:nolemonnomelon/nn-react-native-video.git"
+        "url": "git+ssh://git@github.com/nolemonnomelon/nn-react-native-video.git"
     },
     "resolutions": {
         "@types/react": "~18.0.0"

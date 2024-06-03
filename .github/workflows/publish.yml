@@ -1,0 +1,28 @@
+---
+name: Publish Package to npmjs
+
+on:
+  release:
+    types: [published]
+  push:
+    branches:
+      - feat/nlap-2596/video-player-instrumentation
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+          always-auth: true
+          scope: '@nolemonnomelon'
+      - run: yarn
+      - run: |
+            echo "//npm.pkg.github.com/:_authToken=$NODE_AUTH_TOKEN
+            @nolemonnomelon:registry=https://npm.pkg.github.com/" > ~/.npmrc && npm publish --access=private
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_NN_VIDEO_PAT }}
