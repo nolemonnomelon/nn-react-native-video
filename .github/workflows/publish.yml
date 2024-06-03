@@ -22,6 +22,8 @@ jobs:
           # Defaults to the user or organization that owns the workflow file
           scope: '@nolemonnomelon'
       - run: yarn
-      - run: echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc && yarn publish --access public
+      - run: |
+            echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}
+            @nolemonnomelon:registry=https://registry.npmjs.org/" > ~/.npmrc && yarn publish --access=restricted
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_NN_VIDEO_PAT }}
