@@ -283,6 +283,8 @@ export type OnAudioFocusChangedData = Readonly<{
   hasAudioFocus: boolean;
 }>;
 
+export type OnHlsUpdateData = Readonly<{}>;
+
 type ControlsStyles = Readonly<{
   hideSeekBar?: boolean;
 }>;
@@ -365,6 +367,7 @@ export interface VideoNativeProps extends ViewProps {
   onTextTracks?: DirectEventHandler<OnTextTracksData>; // android
   onTextTrackDataChanged?: DirectEventHandler<OnTextTrackDataChangedData>; // iOS
   onVideoTracks?: DirectEventHandler<OnVideoTracksData>; // android
+  onHlsUpdate?: DirectEventHandler<OnHlsUpdateData>;
 }
 
 export type VideoComponentType = HostComponent<VideoNativeProps>;

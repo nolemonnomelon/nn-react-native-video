@@ -48,6 +48,7 @@ import type {
   OnTextTracksData,
   OnReceiveAdEventData,
   ReactVideoProps,
+  OnHlsUpdateData,
 } from './types';
 
 export type VideoSaveData = {
@@ -110,6 +111,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       onTextTrackDataChanged,
       onVideoTracks,
       onAspectRatio,
+      onHlsUpdate,
       ...rest
     },
     ref,
@@ -301,6 +303,13 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
         onLoadStart?.(e.nativeEvent);
       },
       [hasPoster, onLoadStart],
+    );
+
+    const onHls = useCallback(
+      (e: NativeSyntheticEvent<OnHlsUpdateData>) => {
+        onHlsUpdate?.(e.nativeEvent);
+      },
+      [onHlsUpdate],
     );
 
     const onVideoLoad = useCallback(
@@ -602,6 +611,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
               ? (_onReceiveAdEvent as (e: NativeSyntheticEvent<object>) => void)
               : undefined
           }
+          onHlsUpdate={onHlsUpdate ? onHls : undefined}
         />
         {hasPoster && showPoster ? (
           <Image style={posterStyle} source={{uri: poster}} />

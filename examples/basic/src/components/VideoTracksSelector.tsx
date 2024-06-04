@@ -4,7 +4,7 @@ import {
   SelectedVideoTrack,
   SelectedVideoTrackType,
   VideoTrack,
-} from 'react-native-video';
+} from '@nolemonnomelon/react-native-video';
 import styles from '../styles';
 import React from 'react';
 

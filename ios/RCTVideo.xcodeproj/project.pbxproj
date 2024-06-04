@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -43,7 +43,7 @@
 		0177D39227170A7A00F5BE18 /* RCTVideoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RCTVideoManager.swift; path = Video/RCTVideoManager.swift; sourceTree = "<group>"; };
 		0177D39327170A7A00F5BE18 /* UIView+FindUIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+FindUIViewController.swift"; path = "Video/UIView+FindUIViewController.swift"; sourceTree = "<group>"; };
 		0177D39427170A7A00F5BE18 /* RCTVideoPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RCTVideoPlayerViewController.swift; path = Video/RCTVideoPlayerViewController.swift; sourceTree = "<group>"; };
-		0177D39527170A7A00F5BE18 /* RCTSwiftLog */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RCTSwiftLog; path = Video/RCTSwiftLog; sourceTree = "<group>"; };
+		0177D39527170A7A00F5BE18 /* RCTVideoSwiftLog */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RCTVideoSwiftLog; path = Video/RCTVideoSwiftLog; sourceTree = "<group>"; };
 		0177D39627170A7A00F5BE18 /* RCTVideoPlayerViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RCTVideoPlayerViewControllerDelegate.swift; path = Video/RCTVideoPlayerViewControllerDelegate.swift; sourceTree = "<group>"; };
 		0177D39727170A7A00F5BE18 /* RCTVideoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTVideoManager.m; path = Video/RCTVideoManager.m; sourceTree = "<group>"; };
 		0177D39827170A7A00F5BE18 /* RCTVideo-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RCTVideo-Bridging-Header.h"; path = "Video/RCTVideo-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -89,7 +89,7 @@
 			children = (
 				01489050272001A100E69940 /* DataStructures */,
 				01489051272001A100E69940 /* Features */,
-				0177D39527170A7A00F5BE18 /* RCTSwiftLog */,
+				0177D39527170A7A00F5BE18 /* RCTVideoSwiftLog */,
 				0177D39927170A7A00F5BE18 /* RCTVideo.swift */,
 				0177D39727170A7A00F5BE18 /* RCTVideoManager.m */,
 				0177D39227170A7A00F5BE18 /* RCTVideoManager.swift */,
@@ -161,7 +161,7 @@
 				};
 			};
 			buildConfigurationList = 58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "RCTVideo" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -287,7 +287,11 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/Vendor/SPTPersistentCache/include/**",
 				);
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RCTVideo;
@@ -307,7 +311,11 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/Vendor/SPTPersistentCache/include/**",
 				);
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RCTVideo;
@@ -328,7 +336,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_NO_COMMON_BLOCKS = YES;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RCTVideo;
 				SDKROOT = appletvos;
@@ -351,7 +363,11 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RCTVideo;
 				SDKROOT = appletvos;

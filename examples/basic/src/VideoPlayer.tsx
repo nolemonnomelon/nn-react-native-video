@@ -44,7 +44,7 @@ import Video, {
   ReactVideoSource,
   Drm,
   TextTracks,
-} from 'react-native-video';
+} from '@nolemonnomelon/react-native-video';
 import ToggleControl from './ToggleControl';
 import MultiValueControl, {
   MultiValueControlPropType,
@@ -135,6 +135,10 @@ class VideoPlayer extends Component {
   textTracksSelectionBy = 'index';
 
   srcAllPlatformList = [
+    {
+      description: 'm3u8',
+      uri: 'https://d1dq04nds34am.cloudfront.net/hls/fdab14ae-e54b-4b95-b166-f91e1c2d2122/fdab14ae-e54b-4b95-b166-f91e1c2d2122.m3u8',
+    },
     {
       description: 'local file landscape',
       uri: require('./broadchurch.mp4'),
@@ -405,6 +409,10 @@ class VideoPlayer extends Component {
   onAudioFocusChanged = (event: OnAudioFocusChangedData) => {
     this.setState({paused: !event.hasAudioFocus});
   };
+
+  onHlsUpdate = (e) => {
+    console.log('onHlsUpdate', e);
+  }
 
   getCurrentTimePercentage = () => {
     if (this.state.currentTime > 0 && this.state.duration !== 0) {
@@ -933,6 +941,7 @@ class VideoPlayer extends Component {
           ref={(ref: VideoRef) => {
             this.video = ref;
           }}
+          onHlsUpdate={this.onHlsUpdate}
           source={currentSrc as ReactVideoSource}
           textTracks={additionnal?.textTracks}
           adTagUrl={additionnal?.adTagUrl}

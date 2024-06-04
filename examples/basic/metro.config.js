@@ -30,7 +30,7 @@ const config = {
       ),
       // This prevents "react-native run-windows" from hitting: EBUSY: resource busy or locked, open msbuild.ProjectImports.zip
       /.*\.ProjectImports\.zip/,
-      /(.*\/react-native-video\/node_modules\/.*)$/,
+      /(.*\/@nolemonnomelon\/react-native-video\/node_modules\/.*)$/,
 
       // We need to make sure that only one version is loaded for peerDependencies
       // So we block them at the root, and alias them to the versions in example's node_modules

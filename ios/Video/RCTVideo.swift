@@ -137,6 +137,7 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
     @objc var onTextTracks: RCTDirectEventBlock?
     @objc var onAudioTracks: RCTDirectEventBlock?
     @objc var onTextTrackDataChanged: RCTDirectEventBlock?
+    @objc var onHlsUpdate: RCTDirectEventBlock?
 
     @objc
     func _onPictureInPictureEnter() {
@@ -233,10 +234,43 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
             name: AVAudioSession.routeChangeNotification,
             object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleAVPlayerNewAccessLog(notification:)),
+            name: NSNotification.Name.AVPlayerItemNewAccessLogEntry,
+            object: nil
+        )
+        
         _playerObserver._handlers = self
         #if USE_VIDEO_CACHING
             _videoCache.playerItemPrepareText = playerItemPrepareText
         #endif
+    }
+
+    @objc
+    func handleAVPlayerNewAccessLog(notification: NSNotification!) {
+        RCTLogWarn("Handle AVPlayer Log")
+        guard let playerItem = notification.object as? AVPlayerItem,
+            let lastEvent = playerItem.accessLog()?.events.last else {
+            return
+        }
+        onHlsUpdate?([
+            "event": lastEvent,
+            "indicatedBitrate": lastEvent.indicatedBitrate,
+            "playback": [
+                "startDate": lastEvent.playbackStartDate,
+                "sessionId": lastEvent.playbackSessionID,
+                "startOffset": lastEvent.playbackStartOffset,
+                "type": lastEvent.playbackType,
+            ],
+            "startupTime": lastEvent.startupTime,
+            "durationWatched": lastEvent.durationWatched,
+            "numberOfDroppedVideoFrames": lastEvent.numberOfDroppedVideoFrames,
+            "numberOfStalls": lastEvent.numberOfStalls,
+            "segmentsDownloadedDuration": lastEvent.segmentsDownloadedDuration,
+            "downloadOverdue": lastEvent.downloadOverdue,
+        ])
     }
 
     required init?(coder aDecoder: NSCoder) {

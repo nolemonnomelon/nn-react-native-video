@@ -1,6 +1,6 @@
 import {Picker} from '@react-native-picker/picker';
 import {Text} from 'react-native';
-import {TextTrack, SelectedTrack} from 'react-native-video';
+import {TextTrack, SelectedTrack} from '@nolemonnomelon/react-native-video';
 import styles from '../styles';
 import React from 'react';
 
