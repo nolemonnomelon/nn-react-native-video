@@ -44,6 +44,8 @@ import Video, {
   ReactVideoSource,
   Drm,
   TextTracks,
+  OnAccessLogData,
+  OnErrorLogData,
 } from '@nolemonnomelon/react-native-video';
 import ToggleControl from './ToggleControl';
 import MultiValueControl, {
@@ -410,8 +412,12 @@ class VideoPlayer extends Component {
     this.setState({paused: !event.hasAudioFocus});
   };
 
-  onHlsUpdate = (e) => {
-    console.log('onHlsUpdate', e);
+  onAccessLog = (event: OnAccessLogData) => {
+    console.log('onAccessLog', event);
+  }
+
+  onErrorLog = (event: OnErrorLogData) => {
+    console.log('onErrorLog', event);
   }
 
   getCurrentTimePercentage = () => {
@@ -941,7 +947,8 @@ class VideoPlayer extends Component {
           ref={(ref: VideoRef) => {
             this.video = ref;
           }}
-          onHlsUpdate={this.onHlsUpdate}
+          onAccessLog={this.onAccessLog}
+          onErrorLog={this.onErrorLog}
           source={currentSrc as ReactVideoSource}
           textTracks={additionnal?.textTracks}
           adTagUrl={additionnal?.adTagUrl}

@@ -137,7 +137,8 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
     @objc var onTextTracks: RCTDirectEventBlock?
     @objc var onAudioTracks: RCTDirectEventBlock?
     @objc var onTextTrackDataChanged: RCTDirectEventBlock?
-    @objc var onHlsUpdate: RCTDirectEventBlock?
+    @objc var onAccessLog: RCTDirectEventBlock?
+    @objc var onErrorLog: RCTDirectEventBlock?
 
     @objc
     func _onPictureInPictureEnter() {
@@ -235,42 +236,10 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
             object: nil
         )
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleAVPlayerNewAccessLog(notification:)),
-            name: NSNotification.Name.AVPlayerItemNewAccessLogEntry,
-            object: nil
-        )
-        
         _playerObserver._handlers = self
         #if USE_VIDEO_CACHING
             _videoCache.playerItemPrepareText = playerItemPrepareText
         #endif
-    }
-
-    @objc
-    func handleAVPlayerNewAccessLog(notification: NSNotification!) {
-        RCTLogWarn("Handle AVPlayer Log")
-        guard let playerItem = notification.object as? AVPlayerItem,
-            let lastEvent = playerItem.accessLog()?.events.last else {
-            return
-        }
-        onHlsUpdate?([
-            "event": lastEvent,
-            "indicatedBitrate": lastEvent.indicatedBitrate,
-            "playback": [
-                "startDate": lastEvent.playbackStartDate,
-                "sessionId": lastEvent.playbackSessionID,
-                "startOffset": lastEvent.playbackStartOffset,
-                "type": lastEvent.playbackType,
-            ],
-            "startupTime": lastEvent.startupTime,
-            "durationWatched": lastEvent.durationWatched,
-            "numberOfDroppedVideoFrames": lastEvent.numberOfDroppedVideoFrames,
-            "numberOfStalls": lastEvent.numberOfStalls,
-            "segmentsDownloadedDuration": lastEvent.segmentsDownloadedDuration,
-            "downloadOverdue": lastEvent.downloadOverdue,
-        ])
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -1622,14 +1591,56 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
 
     @objc
     func handleAVPlayerAccess(notification: NSNotification!) {
+        guard let playerItem = notification.object as? AVPlayerItem,
+            let accessLog = playerItem.accessLog(),
+            let lastEvent = accessLog.events.last else { return }
+
+        onAccessLog?([
+            "uri": lastEvent.uri,
+            "serverAddress": lastEvent.serverAddress,
+            "numberOfServerAddressChanges": lastEvent.numberOfServerAddressChanges,
+            "mediaRequestsWWAN": lastEvent.mediaRequestsWWAN,
+            "transferDuration": lastEvent.transferDuration,
+            "numberOfBytesTransferred": lastEvent.numberOfBytesTransferred,
+            "numberOfMediaRequests": lastEvent.numberOfMediaRequests,
+            "playbackStartDate": lastEvent.playbackStartDate,
+            "playbackSessionID": lastEvent.playbackSessionID,
+            "playbackStartOffset": lastEvent.playbackStartOffset,
+            "playbackType": lastEvent.playbackType,
+            "startupTime": lastEvent.startupTime,
+            "durationWatched": lastEvent.durationWatched,
+            "numberOfDroppedVideoFrames": lastEvent.numberOfDroppedVideoFrames,
+            "numberOfStalls": lastEvent.numberOfStalls,
+            "segmentsDownloadedDuration": lastEvent.segmentsDownloadedDuration,
+            "downloadOverdue": lastEvent.downloadOverdue,
+            "observedBitrateStandardDeviation": lastEvent.observedBitrateStandardDeviation,
+            "switchBitrate": lastEvent.switchBitrate,
+            "indicatedBitrate": lastEvent.indicatedBitrate,
+            "observedBitrate": lastEvent.observedBitrate,
+            "averageAudioBitrate": lastEvent.averageAudioBitrate,
+            "averageVideoBitrate": lastEvent.averageVideoBitrate,
+            "indicatedAverageBitrate": lastEvent.indicatedAverageBitrate,
+        ])
+
         guard onVideoBandwidthUpdate != nil else { return }
-
-        guard let accessLog = (notification.object as? AVPlayerItem)?.accessLog() else {
-            return
-        }
-
-        guard let lastEvent = accessLog.events.last else { return }
         onVideoBandwidthUpdate?(["bitrate": lastEvent.observedBitrate, "target": reactTag])
+    }
+
+    @objc
+    func handleAVPlayerError(notification: NSNotification!) {
+        guard let playerItem = notification.object as? AVPlayerItem,
+            let errorLog = playerItem.errorLog(),
+            let lastEvent = errorLog.events.last else { return }
+
+        onErrorLog?([
+            "date": lastEvent.date,
+            "uri": lastEvent.uri,
+            "serverAddress": lastEvent.serverAddress,
+            "playbackSessionID": lastEvent.playbackSessionID,
+            "errorStatusCode": lastEvent.errorStatusCode,
+            "errorDomain": lastEvent.errorDomain,
+            "errorComment": lastEvent.errorComment,
+        ])
     }
 
     func handleTracksChange(playerItem _: AVPlayerItem, change _: NSKeyValueObservedChange<[AVPlayerItemTrack]>) {

@@ -10,6 +10,7 @@ protocol RCTPlayerObserverHandlerObjc {
     func handlePlaybackStalled(notification: NSNotification!)
     func handlePlayerItemDidReachEnd(notification: NSNotification!)
     func handleAVPlayerAccess(notification: NSNotification!)
+    func handleAVPlayerError(notification: NSNotification!)
 }
 
 // MARK: - RCTPlayerObserverHandler
@@ -257,38 +258,41 @@ class RCTPlayerObserver: NSObject, AVPlayerItemMetadataOutputPushDelegate, AVPla
 
     func attachPlayerEventListeners() {
         guard let _handlers else { return }
-        NotificationCenter.default.removeObserver(_handlers,
-                                                  name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
-                                                  object: player?.currentItem)
 
+        NotificationCenter.default.removeObserver(_handlers,
+                                                  name: AVPlayerItem.didPlayToEndTimeNotification,
+                                                  object: player?.currentItem)
         NotificationCenter.default.addObserver(_handlers,
                                                selector: #selector(RCTPlayerObserverHandler.handlePlayerItemDidReachEnd(notification:)),
-                                               name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
+                                               name: AVPlayerItem.didPlayToEndTimeNotification,
                                                object: player?.currentItem)
 
         NotificationCenter.default.removeObserver(_handlers,
-                                                  name: NSNotification.Name.AVPlayerItemPlaybackStalled,
+                                                  name: AVPlayerItem.playbackStalledNotification,
                                                   object: nil)
-
         NotificationCenter.default.addObserver(_handlers,
                                                selector: #selector(RCTPlayerObserverHandler.handlePlaybackStalled(notification:)),
-                                               name: NSNotification.Name.AVPlayerItemPlaybackStalled,
+                                               name: AVPlayerItem.playbackStalledNotification,
                                                object: nil)
 
         NotificationCenter.default.removeObserver(_handlers,
-                                                  name: NSNotification.Name.AVPlayerItemFailedToPlayToEndTime,
+                                                  name: AVPlayerItem.failedToPlayToEndTimeNotification,
                                                   object: nil)
-
         NotificationCenter.default.addObserver(_handlers,
                                                selector: #selector(RCTPlayerObserverHandler.handleDidFailToFinishPlaying(notification:)),
-                                               name: NSNotification.Name.AVPlayerItemFailedToPlayToEndTime,
+                                               name: AVPlayerItem.failedToPlayToEndTimeNotification,
                                                object: nil)
 
-        NotificationCenter.default.removeObserver(_handlers, name: NSNotification.Name.AVPlayerItemNewAccessLogEntry, object: player?.currentItem)
-
+        NotificationCenter.default.removeObserver(_handlers, name: AVPlayerItem.newAccessLogEntryNotification, object: player?.currentItem)
         NotificationCenter.default.addObserver(_handlers,
                                                selector: #selector(RCTPlayerObserverHandlerObjc.handleAVPlayerAccess(notification:)),
-                                               name: NSNotification.Name.AVPlayerItemNewAccessLogEntry,
+                                               name: AVPlayerItem.newAccessLogEntryNotification,
+                                               object: player?.currentItem)
+
+        NotificationCenter.default.removeObserver(_handlers, name: AVPlayerItem.newErrorLogEntryNotification, object: player?.currentItem)
+        NotificationCenter.default.addObserver(_handlers,
+                                               selector: #selector(RCTPlayerObserverHandlerObjc.handleAVPlayerError(notification:)),
+                                               name: AVPlayerItem.newErrorLogEntryNotification,
                                                object: player?.currentItem)
     }
 

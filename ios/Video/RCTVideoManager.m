@@ -68,7 +68,8 @@ RCT_EXPORT_VIEW_PROPERTY(onReceiveAdEvent, RCTDirectEventBlock);
 RCT_EXPORT_VIEW_PROPERTY(onTextTracks, RCTDirectEventBlock);
 RCT_EXPORT_VIEW_PROPERTY(onAudioTracks, RCTDirectEventBlock);
 RCT_EXPORT_VIEW_PROPERTY(onTextTrackDataChanged, RCTDirectEventBlock);
-RCT_EXPORT_VIEW_PROPERTY(onHlsUpdate, RCTDirectEventBlock);
+RCT_EXPORT_VIEW_PROPERTY(onAccessLog, RCTDirectEventBlock);
+RCT_EXPORT_VIEW_PROPERTY(onErrorLog, RCTDirectEventBlock);
 
 RCT_EXTERN_METHOD(save
                   : (NSDictionary*)options reactTag

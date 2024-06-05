@@ -283,7 +283,45 @@ export type OnAudioFocusChangedData = Readonly<{
   hasAudioFocus: boolean;
 }>;
 
-export type OnHlsUpdateData = Readonly<{}>;
+export type OnAccessLogData = Readonly<{
+  uri?: string;
+  serverAddress?: string;
+  numberOfServerAddressChanges: number;
+  mediaRequestsWWAN: number;
+  transferDuration: number;
+  numberOfBytesTransferred: number;
+  numberOfMediaRequests: number;
+  playbackStartDate?: Date;
+  playbackSessionID?: string;
+  playbackStartOffset: number;
+  playbackType?: string;
+  startupTime: number;
+  durationWatched: number;
+  numberOfDroppedVideoFrames: number;
+  numberOfStalls: number;
+  numberOfSegmentsDownloaded: number;
+  segmentsDownloadedDuration: number;
+  downloadOverdue: number;
+  observedBitrateStandardDeviation: number;
+  observedMaxBitrate: number;
+  observedMinBitrate: number;
+  switchBitrate: number;
+  indicatedBitrate: number;
+  observedBitrate: number;
+  averageAudioBitrate: number;
+  averageVideoBitrate: number;
+  indicatedAverageBitrate: number;
+}>;
+
+export type OnErrorLogData = Readonly<{
+  date?: Date;
+  uri?: string;
+  serverAddress?: string;
+  playbackSessionID?: string;
+  errorStatusCode: number;
+  errorDomain: string;
+  errorComment?: string;
+}>;
 
 type ControlsStyles = Readonly<{
   hideSeekBar?: boolean;
@@ -367,7 +405,8 @@ export interface VideoNativeProps extends ViewProps {
   onTextTracks?: DirectEventHandler<OnTextTracksData>; // android
   onTextTrackDataChanged?: DirectEventHandler<OnTextTrackDataChangedData>; // iOS
   onVideoTracks?: DirectEventHandler<OnVideoTracksData>; // android
-  onHlsUpdate?: DirectEventHandler<OnHlsUpdateData>;
+  onAccessLog?: DirectEventHandler<OnAccessLogData>;
+  onErrorLog?: DirectEventHandler<OnErrorLogData>;
 }
 
 export type VideoComponentType = HostComponent<VideoNativeProps>;

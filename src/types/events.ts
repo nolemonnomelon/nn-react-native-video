@@ -1,11 +1,12 @@
 import type {WithDefault} from 'react-native/Libraries/Types/CodegenTypes';
 import type {
+  OnAccessLogData,
   OnAudioFocusChangedData,
   OnAudioTracksData,
   OnBandwidthUpdateData,
   OnBufferData,
+  OnErrorLogData,
   OnExternalPlaybackChangeData,
-  OnHlsUpdateData,
   OnLoadStartData,
   OnPictureInPictureStatusChangedData,
   OnPlaybackRateChangeData,
@@ -264,5 +265,6 @@ export interface ReactVideoEvents {
   onTextTrackDataChanged?: (e: OnTextTrackDataChangedData) => void; // iOS
   onVideoTracks?: (e: OnVideoTracksData) => void; //Android
   onAspectRatio?: (e: OnVideoAspectRatioData) => void;
-  onHlsUpdate?: (e: OnHlsUpdateData) => void;
+  onAccessLog?: (e: OnAccessLogData) => void;
+  onErrorLog?: (e: OnErrorLogData) => void;
 }
