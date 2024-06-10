@@ -97,7 +97,7 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
     private var _didRequestAds = false
     private var _adPlaying = false
 
-    private var _resouceLoaderDelegate: RCTResourceLoaderDelegate?
+    private var _resourceLoaderDelegate: RCTResourceLoaderDelegate?
     private var _playerObserver: RCTPlayerObserver = .init()
 
     #if USE_VIDEO_CACHING
@@ -429,7 +429,7 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
         #endif
 
         if _drm != nil || _localSourceEncryptionKeyScheme != nil {
-            _resouceLoaderDelegate = RCTResourceLoaderDelegate(
+            _resourceLoaderDelegate = RCTResourceLoaderDelegate(
                 asset: asset,
                 drm: _drm,
                 localSourceEncryptionKeyScheme: _localSourceEncryptionKeyScheme,
@@ -517,7 +517,7 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
             }
             self.removePlayerLayer()
             self._playerObserver.player = nil
-            self._resouceLoaderDelegate = nil
+            self._resourceLoaderDelegate = nil
             self._playerObserver.playerItem = nil
 
             // perform on next run loop, otherwise other passed react-props may not be set
@@ -1248,7 +1248,7 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
         }
 
         _player = nil
-        _resouceLoaderDelegate = nil
+        _resourceLoaderDelegate = nil
         _playerObserver.clearPlayer()
 
         #if USE_GOOGLE_IMA
@@ -1286,11 +1286,11 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
     }
 
     func setLicenseResult(_ license: String!, _ licenseUrl: String!) {
-        _resouceLoaderDelegate?.setLicenseResult(license, licenseUrl)
+        _resourceLoaderDelegate?.setLicenseResult(license, licenseUrl)
     }
 
     func setLicenseResultError(_ error: String!, _ licenseUrl: String!) {
-        _resouceLoaderDelegate?.setLicenseResultError(error, licenseUrl)
+        _resourceLoaderDelegate?.setLicenseResultError(error, licenseUrl)
     }
 
     func dismissFullscreenPlayer() {
