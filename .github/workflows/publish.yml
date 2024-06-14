@@ -5,8 +5,8 @@ on:
   release:
     types: [published]
   push:
-    branches:
-      - feat/nlap-2596/video-player-instrumentation
+    tags:
+      - "*"
 
 jobs:
   build:
@@ -21,8 +21,6 @@ jobs:
           always-auth: true
           scope: '@nolemonnomelon'
       - run: |
-            # npm confit set //npm.pkg.github.com/:_authToken ${NODE_AUTH_TOKEN}
-            # npm login --registry=https://npm.pkg.github.com
             echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
             @nolemonnomelon:registry=https://npm.pkg.github.com/" > ~/.npmrc
             yarn && yarn publish --access=restricted
