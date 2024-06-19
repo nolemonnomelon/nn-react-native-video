@@ -42,6 +42,7 @@ import Video, {
   ReactVideoSource,
   Drm,
   TextTracks,
+  OnHLSStreamUpdate,
 } from 'react-native-video';
 import ToggleControl from './ToggleControl';
 import MultiValueControl, {
@@ -535,6 +536,10 @@ class VideoPlayer extends Component {
     this.setState({resizeMode: value});
   };
 
+  onHandleHLSStreamUpdate = (data: OnHLSStreamUpdate) => {
+    console.log('onHandleHLSStreamUpdate', data);
+  }
+
   onSelectedAudioTrackChange = (itemValue: string) => {
     console.log('on audio value change ' + itemValue);
     if (itemValue === 'none') {
@@ -788,6 +793,7 @@ class VideoPlayer extends Component {
           onReadyForDisplay={this.onReadyForDisplay}
           onBuffer={this.onVideoBuffer}
           onSeek={this.onSeek}
+          onHandleHLSStreamUpdate={this.onHandleHLSStreamUpdate}
           repeat={this.state.loop}
           selectedTextTrack={this.state.selectedTextTrack}
           selectedAudioTrack={this.state.selectedAudioTrack}

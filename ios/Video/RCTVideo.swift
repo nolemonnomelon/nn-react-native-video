@@ -137,6 +137,7 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
     @objc var onTextTracks: RCTDirectEventBlock?
     @objc var onAudioTracks: RCTDirectEventBlock?
     @objc var onTextTrackDataChanged: RCTDirectEventBlock?
+    @objc var onHLSStreamUpdate: RCTDirectEventBlock? // New event
 
     @objc
     func _onPictureInPictureEnter() {
@@ -233,6 +234,13 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
             name: AVAudioSession.routeChangeNotification,
             object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleAVPlayerHLSUpdate(notification:)),
+            name: NSNotification.Name.AVPlayerItemNewAccessLogEntry,
+            object: nil
+        )
         _playerObserver._handlers = self
         #if USE_VIDEO_CACHING
             _videoCache.playerItemPrepareText = playerItemPrepareText
@@ -261,6 +269,18 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
     }
 
     // MARK: - App lifecycle handlers
+    @objc
+    func handleAVPlayerHLSUpdate(notification: NSNotification) {
+        // onHLSStreamUpdate?(["handleAVPlayerHLSUpdate": 12, "target": reactTag as Any])
+        guard let playerItem = notification.object as? AVPlayerItem,
+            let lastEvent = playerItem.accessLog()?.events.last else {
+            return
+        }
+
+        let indicatedBitrate = lastEvent.indicatedBitrate
+
+        onHLSStreamUpdate?(["indicatedBitrate": indicatedBitrate])
+    }
 
     @objc
     func applicationWillResignActive(notification _: NSNotification!) {

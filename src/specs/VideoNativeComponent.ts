@@ -288,6 +288,23 @@ type ControlsStyles = Readonly<{
   seekIncrementMS?: number;
 }>;
 
+export type OnHLSStreamUpdate = Readonly<{
+  downloadOverdue?: number;
+  durationWatched?: number;
+  indicatedBitrate?: number;
+  numberOfDroppedVideoFrames?: number;
+  numberOfStalls?: number;
+  playbackSessionID?: string;
+  playbackStartDate?: Date;
+  playbackStartOffset?: Date;
+  playbackType?: string;
+  segmentsDownloadedDuration?: number;
+  startupTime?: number;
+  target?: number;
+  time?: Date;
+  uri?: string;
+}>;
+
 export interface VideoNativeProps extends ViewProps {
   src?: VideoSrc;
   drm?: Drm;
@@ -344,6 +361,7 @@ export interface VideoNativeProps extends ViewProps {
   onVideoProgress?: DirectEventHandler<OnProgressData>;
   onVideoBandwidthUpdate?: DirectEventHandler<OnBandwidthUpdateData>;
   onVideoSeek?: DirectEventHandler<OnSeekData>;
+  onHLSStreamUpdate?: DirectEventHandler<OnHLSStreamUpdate>; // IOS
   onVideoEnd?: DirectEventHandler<{}>; // all
   onVideoAudioBecomingNoisy?: DirectEventHandler<{}>;
   onVideoFullscreenPlayerWillPresent?: DirectEventHandler<{}>; // ios, android

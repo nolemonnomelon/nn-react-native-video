@@ -48,6 +48,7 @@ import type {
   OnTextTracksData,
   OnReceiveAdEventData,
   ReactVideoProps,
+  OnHLSStreamUpdate,
 } from './types';
 
 export type VideoSaveData = {
@@ -87,6 +88,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       onError,
       onProgress,
       onSeek,
+      onHandleHLSStreamUpdate,
       onEnd,
       onBuffer,
       onBandwidthUpdate,
@@ -339,6 +341,14 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       [onSeek],
     );
 
+    // iOS only
+    const onVideoHLSStreamUpdate = useCallback(
+      (e: NativeSyntheticEvent<OnHLSStreamUpdate>) => {
+        onHandleHLSStreamUpdate?.(e.nativeEvent);
+      },
+      [onHandleHLSStreamUpdate],
+    );
+
     const onVideoPlaybackStateChanged = useCallback(
       (e: NativeSyntheticEvent<OnPlaybackStateChangedData>) => {
         onPlaybackStateChanged?.(e.nativeEvent);
@@ -561,6 +571,9 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
           onVideoError={onError ? onVideoError : undefined}
           onVideoProgress={onProgress ? onVideoProgress : undefined}
           onVideoSeek={onSeek ? onVideoSeek : undefined}
+          onHLSStreamUpdate={
+            onHandleHLSStreamUpdate ? onVideoHLSStreamUpdate : undefined
+          }
           onVideoEnd={onEnd}
           onVideoBuffer={onBuffer ? onVideoBuffer : undefined}
           onVideoPlaybackStateChanged={
