@@ -137,7 +137,8 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
     @objc var onTextTracks: RCTDirectEventBlock?
     @objc var onAudioTracks: RCTDirectEventBlock?
     @objc var onTextTrackDataChanged: RCTDirectEventBlock?
-    @objc var onHLSStreamUpdate: RCTDirectEventBlock? // New event
+    @objc var onHLSStreamUpdate: RCTDirectEventBlock?
+    @objc var onHTTPRequestStatus: RCTDirectEventBlock?
 
     @objc
     func _onPictureInPictureEnter() {
@@ -256,6 +257,7 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+        _playerItem?.removeObserver(self, forKeyPath: "status")
         self.removePlayerLayer()
         _playerObserver.clearPlayer()
 
@@ -468,6 +470,9 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
         _player?.pause()
         _playerItem = playerItem
         _playerObserver.playerItem = _playerItem
+
+        self._playerItem?.addObserver(self, forKeyPath: "status", options: .new, context: nil)
+
         setPreferredForwardBufferDuration(_preferredForwardBufferDuration)
         setPlaybackRange(playerItem, withCropStart: _source?.cropStart, withCropEnd: _source?.cropEnd)
         setFilter(_filterName)
@@ -506,6 +511,28 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
         #endif
         isSetSourceOngoing = false
         applyNextSource()
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+      if keyPath == "status" {
+          guard let playerItem = object as? AVPlayerItem else { return }
+          if playerItem.status == .failed {
+              let error = playerItem.error?.localizedDescription ?? "Unknown error"
+              sendHTTPRequestEvent(url: playerItem.asset as! AVURLAsset, status: 1, success: false, error: error)
+          } else if playerItem.status == .readyToPlay {
+              sendHTTPRequestEvent(url: playerItem.asset as! AVURLAsset, status: 0, success: true, error: nil)
+          }
+      }
+    }
+  
+    private func sendHTTPRequestEvent(url: AVURLAsset, status: Int, success: Bool, error: String?) {
+        let event: [String: Any] = [
+            "url": url.url.absoluteString,
+            "status": status,
+            "success": success,
+            "error": error ?? ""
+        ]
+        onHTTPRequestStatus?(event)
     }
 
     @objc

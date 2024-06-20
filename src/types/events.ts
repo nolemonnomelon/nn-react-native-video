@@ -6,6 +6,7 @@ import type {
   OnBufferData,
   OnExternalPlaybackChangeData,
   OnHLSStreamUpdate,
+  OnHTTPRequestStatus,
   OnLoadStartData,
   OnPictureInPictureStatusChangedData,
   OnPlaybackRateChangeData,
@@ -258,6 +259,7 @@ export interface ReactVideoEvents {
   onRestoreUserInterfaceForPictureInPictureStop?: () => void; //iOS
   onSeek?: (e: OnSeekData) => void; //Android, iOS, Windows UWP
   onHandleHLSStreamUpdate?: (e: OnHLSStreamUpdate) => void; //iOS
+  onHTTPRequestStatus?: (e: OnHTTPRequestStatus) => void; //iOS
   onPlaybackStateChanged?: (e: OnPlaybackStateChangedData) => void; // Android, iOS
   onTimedMetadata?: (e: OnTimedMetadataData) => void; //Android, iOS
   onAudioTracks?: (e: OnAudioTracksData) => void; // Android

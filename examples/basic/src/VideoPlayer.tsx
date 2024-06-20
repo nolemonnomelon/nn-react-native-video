@@ -43,6 +43,7 @@ import Video, {
   Drm,
   TextTracks,
   OnHLSStreamUpdate,
+  OnHTTPRequestStatus,
 } from 'react-native-video';
 import ToggleControl from './ToggleControl';
 import MultiValueControl, {
@@ -540,6 +541,10 @@ class VideoPlayer extends Component {
     console.log('onHandleHLSStreamUpdate', data);
   }
 
+  onHandleHTTPRequestStatus = (data: OnHTTPRequestStatus) => {
+    console.log('onHandleHTTPRequestStatus', data);
+  }
+
   onSelectedAudioTrackChange = (itemValue: string) => {
     console.log('on audio value change ' + itemValue);
     if (itemValue === 'none') {
@@ -794,6 +799,7 @@ class VideoPlayer extends Component {
           onBuffer={this.onVideoBuffer}
           onSeek={this.onSeek}
           onHandleHLSStreamUpdate={this.onHandleHLSStreamUpdate}
+          onHTTPRequestStatus={this.onHandleHTTPRequestStatus}
           repeat={this.state.loop}
           selectedTextTrack={this.state.selectedTextTrack}
           selectedAudioTrack={this.state.selectedAudioTrack}

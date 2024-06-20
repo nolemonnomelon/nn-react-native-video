@@ -305,6 +305,14 @@ export type OnHLSStreamUpdate = Readonly<{
   uri?: string;
 }>;
 
+export type OnHTTPRequestStatus = Readonly<{
+  error: string;
+  status: 0 | 1; // Code zero is “no error”
+  success: boolean;
+  target: number;
+  url: string;
+}>;
+
 export interface VideoNativeProps extends ViewProps {
   src?: VideoSrc;
   drm?: Drm;
@@ -361,7 +369,8 @@ export interface VideoNativeProps extends ViewProps {
   onVideoProgress?: DirectEventHandler<OnProgressData>;
   onVideoBandwidthUpdate?: DirectEventHandler<OnBandwidthUpdateData>;
   onVideoSeek?: DirectEventHandler<OnSeekData>;
-  onHLSStreamUpdate?: DirectEventHandler<OnHLSStreamUpdate>; // IOS
+  onHLSStreamUpdate?: DirectEventHandler<OnHLSStreamUpdate>; // ios
+  onHTTPRequestStatus?: DirectEventHandler<OnHTTPRequestStatus>; // ios
   onVideoEnd?: DirectEventHandler<{}>; // all
   onVideoAudioBecomingNoisy?: DirectEventHandler<{}>;
   onVideoFullscreenPlayerWillPresent?: DirectEventHandler<{}>; // ios, android

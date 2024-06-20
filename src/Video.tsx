@@ -49,6 +49,7 @@ import type {
   OnReceiveAdEventData,
   ReactVideoProps,
   OnHLSStreamUpdate,
+  OnHTTPRequestStatus,
 } from './types';
 
 export type VideoSaveData = {
@@ -89,6 +90,7 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       onProgress,
       onSeek,
       onHandleHLSStreamUpdate,
+      onHTTPRequestStatus,
       onEnd,
       onBuffer,
       onBandwidthUpdate,
@@ -349,6 +351,13 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
       [onHandleHLSStreamUpdate],
     );
 
+    const onVideoHTTPRequestStatus = useCallback(
+      (e: NativeSyntheticEvent<OnHTTPRequestStatus>) => {
+        onHTTPRequestStatus?.(e.nativeEvent);
+      },
+      [onHTTPRequestStatus],
+    );
+
     const onVideoPlaybackStateChanged = useCallback(
       (e: NativeSyntheticEvent<OnPlaybackStateChangedData>) => {
         onPlaybackStateChanged?.(e.nativeEvent);
@@ -573,6 +582,9 @@ const Video = forwardRef<VideoRef, ReactVideoProps>(
           onVideoSeek={onSeek ? onVideoSeek : undefined}
           onHLSStreamUpdate={
             onHandleHLSStreamUpdate ? onVideoHLSStreamUpdate : undefined
+          }
+          onHTTPRequestStatus={
+            onHTTPRequestStatus ? onVideoHTTPRequestStatus : undefined
           }
           onVideoEnd={onEnd}
           onVideoBuffer={onBuffer ? onVideoBuffer : undefined}
